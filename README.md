@@ -60,7 +60,7 @@ python manage.py runserver
 
 ## Admin Privileges
 
-If your superuser does not have admin privileges, you can manually add them in the Django admin interface, or use the shell:
+(After Creating superuser "py manage.py createsuperuser")If your superuser does not have admin privileges, you can manually add them in the Django admin interface, or use the shell:
 
 ```sh
 python manage.py shell
