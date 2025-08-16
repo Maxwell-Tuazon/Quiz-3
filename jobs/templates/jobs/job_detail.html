@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ job.job_title }}</h2>
+    <p>{{ job.job_description }}</p>
+    <p><b>Offer:</b> {{ job.min_offer }} - {{ job.max_offer }}</p>
+    <p><b>Location:</b> {{ job.location }}</p>
+
+    {% if is_admin %}
+        <a href="{% url 'job_edit' job.pk %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'job_delete' job.pk %}" class="btn btn-danger">Delete</a>
+        <h3>Applicants</h3>
+        <table class="table">
+            <tr>
+                <th>User</th>
+                <th>Applied Date</th>
+                <th>Resume</th>
+            </tr>
+            {% for app in applicants %}
+            <tr>
+                <td>{{ app.user.username }}</td>
+                <td>{{ app.applied_date }}</td>
+                <td><a href="{{ app.resume.url }}" target="_blank">View</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No applicants yet.</td></tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'job_apply' job.pk %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="resume">Upload Resume</label>
+                <input type="file" name="resume" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Apply</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
